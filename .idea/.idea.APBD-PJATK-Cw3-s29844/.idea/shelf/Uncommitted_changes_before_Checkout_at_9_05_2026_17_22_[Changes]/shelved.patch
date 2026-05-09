@@ -1,0 +1,151 @@
+Index: Database/Database.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>namespace APBD_PJATK_Cw3_s29844.Database;\r\n\r\npublic class Database\r\n{\r\n    \r\n}
+===================================================================
+diff --git a/Database/Database.cs b/Database/Database.cs
+--- a/Database/Database.cs	(revision b65498fa6ad525eb3cc1f87c588852414e2ca72b)
++++ b/Database/Database.cs	(date 1778340001502)
+@@ -1,6 +1,139 @@
+ namespace APBD_PJATK_Cw3_s29844.Database;
+ 
+-public class Database
++using APBD_PJATK_Cw3_s29844.Models;
++
++public static class InMemoryDatabase
+ {
+-    
++    public static List<Room> Rooms { get; } = new()
++    {
++        new Room
++        {
++            Id = 1,
++            Name = "Sala z dobrym netem",
++            BuildingCode = "A",
++            Floor = 1,
++            Capacity = 22,
++            HasProjector = true,
++            IsActive = true
++        },
++        new Room
++        {
++            Id = 2,
++            Name = "Sala z automatem do jedzenia",
++            BuildingCode = "B",
++            Floor = 2,
++            Capacity = 26,
++            HasProjector = true,
++            IsActive = true
++        },
++        new Room
++        {
++            Id = 3,
++            Name = "Duza aula",
++            BuildingCode = "C",
++            Floor = 0,
++            Capacity = 115,
++            HasProjector = true,
++            IsActive = true
++        },
++        new Room
++        {
++            Id = 4,
++            Name = "Mala sala",
++            BuildingCode = "A",
++            Floor = 1,
++            Capacity = 14,
++            HasProjector = false,
++            IsActive = false
++        },
++        new Room
++        {
++            Id = 5,
++            Name = "Sala z dobrym oświetleniem",
++            BuildingCode = "B",
++            Floor = 3,
++            Capacity = 30,
++            HasProjector = true,
++            IsActive = true
++        }
++    };
++
++    public static List<Reservation> Reservations { get; } = new()
++    {
++        new Reservation
++        {
++            Id = 1,
++            RoomId = 1,
++            OrganizerName = "Kamil Wójcik",
++            Topic = "Ogarnięcie projektu w grupie",
++            Date = new DateOnly(2026, 5, 10),
++            StartTime = new TimeOnly(9, 0),
++            EndTime = new TimeOnly(10, 30),
++            Status = "confirmed"
++        },
++        new Reservation
++        {
++            Id = 2,
++            RoomId = 2,
++            OrganizerName = "Zuzia",
++            Topic = "Nauka do wejściówki",
++            Date = new DateOnly(2026, 5, 10),
++            StartTime = new TimeOnly(10, 0),
++            EndTime = new TimeOnly(12, 30),
++            Status = "confirmed"
++        },
++        new Reservation
++        {
++            Id = 3,
++            RoomId = 3,
++            OrganizerName = "Krawczyk",
++            Topic = "Przećwiczenie prezentacji",
++            Date = new DateOnly(2026, 5, 11),
++            StartTime = new TimeOnly(13, 15),
++            EndTime = new TimeOnly(14, 0),
++            Status = "planned"
++        },
++        new Reservation
++        {
++            Id = 4,
++            RoomId = 5,
++            OrganizerName = "Natalia",
++            Topic = "Siedzenie nad zadaniem",
++            Date = new DateOnly(2026, 5, 12),
++            StartTime = new TimeOnly(15, 0),
++            EndTime = new TimeOnly(16, 30),
++            Status = "planned"
++        },
++        new Reservation
++        {
++            Id = 5,
++            RoomId = 1,
++            OrganizerName = "Bartek B",
++            Topic = "Rezerwacja na spokojną naukę",
++            Date = new DateOnly(2026, 5, 13),
++            StartTime = new TimeOnly(8, 0),
++            EndTime = new TimeOnly(9, 30),
++            Status = "cancelled"
++        }
++    };
++
++    public static int GetNextRoomId()
++    {
++        if (Rooms.Count == 0)
++        {
++            return 1;
++        }
++
++        return Rooms.Max(room => room.Id) + 1;
++    }
++
++    public static int GetNextReservationId()
++    {
++        if (Reservations.Count == 0)
++        {
++            return 1;
++        }
++
++        return Reservations.Max(reservation => reservation.Id) + 1;
++    }
+ }
+\ No newline at end of file
