@@ -1,0 +1,107 @@
+@host = http://localhost:5010
+
+### Wszystkie sale
+GET {{host}}/api/rooms
+Accept: application/json
+
+### Jedna sala
+GET {{host}}/api/rooms/1
+Accept: application/json
+
+### Sala, której nie ma - 404
+GET {{host}}/api/rooms/999
+Accept: application/json
+
+### Sale z budynku A
+GET {{host}}/api/rooms/building/A
+Accept: application/json
+
+### Filtrowanie sal
+GET {{host}}/api/rooms?minCapacity=20&hasProjector=true&activeOnly=true
+Accept: application/json
+
+### Dodanie sali
+POST {{host}}/api/rooms
+Content-Type: application/json
+
+{
+  "name": "Lab 404",
+  "buildingCode": "D",
+  "floor": 4,
+  "capacity": 28,
+  "hasProjector": true,
+  "isActive": true
+}
+
+### Aktualizacja sali
+PUT {{host}}/api/rooms/4
+Content-Type: application/json
+
+{
+  "name": "Sala 12 po remoncie",
+  "buildingCode": "A",
+  "floor": 1,
+  "capacity": 18,
+  "hasProjector": true,
+  "isActive": true
+}
+
+### Usunięcie sali bez rezerwacji
+DELETE {{host}}/api/rooms/4
+
+### Wszystkie rezerwacje
+GET {{host}}/api/reservations
+Accept: application/json
+
+### Jedna rezerwacja
+GET {{host}}/api/reservations/1
+Accept: application/json
+
+### Filtrowanie rezerwacji
+GET {{host}}/api/reservations?date=2026-05-10&status=confirmed&roomId=2
+Accept: application/json
+
+### Dodanie poprawnej rezerwacji
+POST {{host}}/api/reservations
+Content-Type: application/json
+
+{
+  "roomId": 2,
+  "organizerName": "Anna Kowalska",
+  "topic": "Warsztaty z HTTP i REST",
+  "date": "2026-05-10",
+  "startTime": "13:00:00",
+  "endTime": "14:30:00",
+  "status": "confirmed"
+}
+
+### Próba dodania rezerwacji kolidującej - 409 Conflict
+POST {{host}}/api/reservations
+Content-Type: application/json
+
+{
+  "roomId": 2,
+  "organizerName": "Adam Testowy",
+  "topic": "Kolidujące spotkanie",
+  "date": "2026-05-10",
+  "startTime": "11:00:00",
+  "endTime": "12:00:00",
+  "status": "confirmed"
+}
+
+### Próba dodania rezerwacji z błędną godziną - 400 Bad Request
+POST {{host}}/api/reservations
+Content-Type: application/json
+
+{
+  "roomId": 2,
+  "organizerName": "Adam Testowy",
+  "topic": "Błędne godziny",
+  "date": "2026-05-10",
+  "startTime": "14:00:00",
+  "endTime": "12:00:00",
+  "status": "confirmed"
+}
+
+### Usunięcie rezerwacji
+DELETE {{host}}/api/reservations/5
